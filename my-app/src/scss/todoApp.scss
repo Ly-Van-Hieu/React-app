@@ -101,15 +101,15 @@ body {
         align-items: center;
         justify-content: space-between;
         .work {
-          input {
-
-          }
           label {
             padding-left: 20px;
           }
           .completed {
             text-decoration: line-through;
             color: #cccccc;
+          }
+          .doing {
+            color: violet;
           }
         }
         .delete-work {
@@ -121,24 +121,35 @@ body {
       }
     }
     .task {
-      padding: 10px 0;
+      box-sizing: border-box;
+      padding: 10px 0px;
       padding-left: 25px;
+      padding-right: 60px;
       display: flex;
-      li {
-        margin-right: 15px;
-        list-style: none;
-        .btn-task {
-          font-weight: bold;
-          padding: 10px 20px;
-          background-color: #ffffff;
-          border: solid 1px #eeeef5;
-          border-radius: 40px;
-          outline: none;
-          cursor: pointer;
+      justify-content: space-between;
+      span {
+        display: flex;
+        li {
+          margin-right: 15px;
+          list-style: none;
+          .btn-task {
+            font-weight: bold;
+            padding: 10px 20px;
+            background-color: #ffffff;
+            border: solid 1px #eeeef5;
+            border-radius: 40px;
+            outline: none;
+            cursor: pointer;
+          }
+          .focus {
+            background-color: #eeeef5;
+          }
         }
-        .focus {
-          background-color: #eeeef5;
-        }
+      }
+
+      .job-performance {
+        color: #cccccc;
+        padding-top: 5px;
       }
     }
   }

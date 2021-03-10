@@ -20,12 +20,15 @@ import { status } from '../../data/status'
 class TodoApp extends Component {
   state = {
     tasks: works,
-    filteredTasks: works,
     groupTags: tags,
     groupStatus: status,
     currentTags: 0,
-    currentStatus: 0
+    currentStatus: 0,
+    valueAdd: ''
   }
+
+  iconAdd = React.createRef()
+  inputAdd = React.createRef()
 
   setCurrentTags = id => {
     this.setFilterData({
@@ -42,38 +45,69 @@ class TodoApp extends Component {
   }
 
   setFilterData = ({currentTags, currentStatus}) => {
-    const newData = this.state.tasks.filter(item => {
-      if (currentStatus === 0 && currentTags === 0) {
-        return true
-      }
-      if (currentStatus === 0 && currentTags !== 0) {
-        return item.tag === currentTags
-      }
-      if (currentStatus !== 0 && currentTags === 0) {
-        return item.status === currentStatus
-      }
-      if (currentStatus !== 0 && currentTags !== 0) {
-        return item.status === currentStatus && item.tag === currentTags
-      }
-    })
-
     this.setState({
       currentTags,
       currentStatus,
-      filteredTasks: newData
     })
   }
 
-  // onChange = (e,id) => {
-  //   // console.log(e.target.checked, id)
-  //   const work = this.state.tasks.filter(item => item.id === id)
-  //   // this.setState({
+  createId = () => {
+    let max = 0
 
-  //   // })
-  // }
+    this.state.tasks.forEach(item => {
+      if (item.id > max) {
+        max = item.id
+      }
+    })
 
-  addWork = (e) => {
-    // console.log(e)
+    return max + 1
+  }
+
+  addWork = () => {
+    const value = this.inputAdd.current.value
+    const tagId = this.state.currentTags
+    const work = {
+      id: this.createId(),
+      name: value,
+      tag: tagId,
+      status: 1
+    }
+    const newData = this.state.tasks
+    newData.push(work)
+    if (tagId !== 0 && value) {
+      this.setState({
+        currentTags: tagId,
+        tasks: newData,
+        valueAdd: ''
+      })
+    } else {
+      if (!value) {
+        alert ('Please enter a task')
+      }
+      if (tagId === 0) {
+        alert ('Please choose a tag')
+      }
+    }
+
+  }
+
+  enterAdd = (e) => {
+    if(e.charCode === 13) {
+      this.addWork()
+    }
+  }
+
+  changeStatus = id => {
+    const item = this.state.tasks.find(row => row.id === id)
+    if(item.status !== 1)
+    {
+      item.status = 1
+    }else{
+      item.status = 3
+    }
+    this.setState ({
+      ...this.state
+    })
   }
 
   deleteWork = (id) => {
@@ -81,6 +115,13 @@ class TodoApp extends Component {
     this.setState({
       tasks: newData,
       filteredTasks: newData
+    })
+  }
+
+  onChange = (e) => {
+    const {value} = e.target
+    this.setState({
+      valueAdd: value
     })
   }
 
@@ -94,8 +135,10 @@ class TodoApp extends Component {
 
         <div className="content">
           <div className="inputAdd">
-            <input type="text" placeholder="What do you need to do?" />
-            <i className="fas fa-plus" onClick={this.addWork}></i>
+            <input ref = {this.inputAdd} type="text" placeholder="What do you need to do?"
+              onKeyPress={(e) => this.enterAdd(e)} value={this.state.valueAdd} onChange={(e) => this.onChange(e)}
+            />
+            <i ref = {this.iconAdd} className="fas fa-plus" onClick={this.addWork}></i>
           </div>
 
           <div className="tag">
@@ -109,7 +152,13 @@ class TodoApp extends Component {
           </div>
 
           <div className="list-work">
-            <List works={this.state.filteredTasks} deleteWork={this.deleteWork} />
+            <List
+              changeStatus={this.changeStatus}
+              works={this.state.tasks}
+              deleteWork={this.deleteWork}
+              currentTags={this.state.currentTags}
+              currentStatus={this.state.currentStatus}
+            />
           </div>
 
           <div className="task">
@@ -117,6 +166,7 @@ class TodoApp extends Component {
               groupsStatus={this.state.groupStatus}
               currentStatus={this.state.currentStatus}
               setCurrentStatus={this.setCurrentStatus}
+              works={this.state.tasks}
             />
           </div>
         </div>
