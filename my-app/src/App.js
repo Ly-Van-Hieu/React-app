@@ -1,9 +1,9 @@
-
+import Form from './form'
 
 const App = () => {
   return (
     <>
-      <h1>Đây là react js ở master</h1>
+      <Form />
     </>
   )
 }
