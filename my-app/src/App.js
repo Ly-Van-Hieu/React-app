@@ -1,9 +1,10 @@
-
+import Input, { InputCard } from './MyHOC/Input.js'
 
 const App = () => {
   return (
     <>
-      <h1>Đây là react js ở master</h1>
+      <Input label="userName" type="text" condition={10} />
+      <InputCard label="age" type="number" condition={20} /> {/* higher order component */}
     </>
   )
 }
