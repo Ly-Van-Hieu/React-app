@@ -19,9 +19,10 @@ const Login = () => {
 
     axios.get(`https://jsonplaceholder.typicode.com/users/${id}`)
       .then(response => {
-        //console.log('---response:', response)
+        console.log('---response:', response)
+        const user = response.data;
       })
-      .catch(() => {
+      .catch(error => {
         alert('hãy nhập lại')
       })
   }
