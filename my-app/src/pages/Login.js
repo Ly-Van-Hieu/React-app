@@ -1,7 +1,14 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import { useHistory } from 'react-router-dom'
+
+import { useDispatch } from 'react-redux'
+import { setUser } from './../redux/state/user'
 
 const Login = () => {
+  const dispatch = useDispatch()
+  const history = useHistory()
+
   const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
 
@@ -12,15 +19,21 @@ const Login = () => {
   const submit = () => {
     // lấy username và password
 
-    const id = userName;
+    const id = userName
     if (!id) {
-      return;
+      return
     }
 
     axios.get(`https://jsonplaceholder.typicode.com/users/${id}`)
       .then(response => {
         console.log('---response:', response)
         const user = response.data;
+
+        dispatch(
+          setUser(user)
+        )
+
+        history.push('/')
       })
       .catch(error => {
         alert('hãy nhập lại')

@@ -2,7 +2,12 @@ import React, {useState, useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
+
+import { useDispatch } from 'react-redux'
+import { setUser } from './../redux/state/user'
+
 const Home = () => {
+  const dispatch = useDispatch()
   const [posts, setPosts] = useState([])
   const [photos, setPhotos] = useState([])
 
@@ -26,6 +31,12 @@ const Home = () => {
       })
   }
 
+  const logout = () => {
+    dispatch(
+      setUser(null)
+    )
+  }
+
   useEffect(() => {
     fetchPosts()
     fetchPhotos()
@@ -34,6 +45,7 @@ const Home = () => {
   return (
     <>
       <h1>home page</h1>
+      <button onClick={logout}>Logout</button>
 
       <h2>Danh sách bài viết nổi bật</h2>
       {
